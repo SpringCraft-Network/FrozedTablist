@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        name "viaversionEverything"
+        url "https://repo.viaversion.com/everything"
+    }
+
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    compileOnly "com.viaversion:viaversion-api:5.0.4-SNAPSHOT"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+group = 'club.frozed.tablist'
+version = '4.0.0-SNAPSHOT'
+description = 'FrozedTablist'
+
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
+
+afterEvaluate {
+    publishing {
+        publications {
+            library(MavenPublication) {
+                from components.java
+
+                pom {
+                    name = 'Frozed Tablist API'
+                    description = 'Frozed club tablist lib (1.8 only)'
+                    url = 'https://www.frozed.club'
+
+                    developers {
+                        developer {
+                            id = 'Mandress101'
+                            name = 'Mandress'
+                            email = 'ceo@skynetcorp.dev'
+                        }
+                    }
+                }
+
+                groupId = "club.frozed.tablist"
+                artifactId = "FrozedTablist"
+                version = "4.0.0-SNAPSHOT"
+            }
+        }
+
+        repositories {
+            maven {
+                name 'SkynetCorp_Repo'
+                url("https://repo.skynetcorp.dev/kelpmc")
+                credentials {
+                    username "${mavenUser}"
+                    password "${mavenPassword}"
+                }
+            }
+        }
+    }
+}

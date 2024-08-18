@@ -1,7 +1,6 @@
 package club.frozed.tablist.listener;
 
 import club.frozed.tablist.FrozedTablist;
-import club.frozed.tablist.layout.TabLayout_v1_7;
 import club.frozed.tablist.layout.TabLayout_v1_8;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -11,6 +10,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.Objects;
+
 @AllArgsConstructor
 public class TabListener implements Listener {
 
@@ -19,45 +20,25 @@ public class TabListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        TabLayout_v1_7 tabLayout_v1_7;
         TabLayout_v1_8 tabLayout_v1_8;
         boolean validate = false;
 
-        switch (FrozedTablist.getInstance().getVersion()) {
-            case v1_7_R4:
-                tabLayout_v1_7 = new TabLayout_v1_7(instance, player);
-                if (TabLayout_v1_7.getLayoutMapping().containsKey(player.getUniqueId())) {
-                    validate = true;
-                }
+        if (Objects.requireNonNull(FrozedTablist.getInstance().getVersion()) == FrozedTablist.Version.v1_8_R3) {
+            tabLayout_v1_8 = new TabLayout_v1_8(instance, player);
+            if (TabLayout_v1_8.getLayoutMapping().containsKey(player.getUniqueId())) {
+                validate = true;
+            }
 
-                if (TabLayout_v1_7.getLayoutMapping().get(player.getUniqueId()) != null) {
-                    validate = true;
-                }
+            if (TabLayout_v1_8.getLayoutMapping().get(player.getUniqueId()) != null) {
+                validate = true;
+            }
 
-                if (!validate) {
-                    tabLayout_v1_7.create();
-                    tabLayout_v1_7.setHeaderAndFooter();
-                }
+            if (!validate) {
+                tabLayout_v1_8.create();
+                tabLayout_v1_8.setHeaderAndFooter();
+            }
 
-                TabLayout_v1_7.getLayoutMapping().put(player.getUniqueId(), tabLayout_v1_7);
-                break;
-            case v1_8_R3:
-                tabLayout_v1_8 = new TabLayout_v1_8(instance, player);
-                if (TabLayout_v1_8.getLayoutMapping().containsKey(player.getUniqueId())) {
-                    validate = true;
-                }
-
-                if (TabLayout_v1_8.getLayoutMapping().get(player.getUniqueId()) != null) {
-                    validate = true;
-                }
-
-                if (!validate) {
-                    tabLayout_v1_8.create();
-                    tabLayout_v1_8.setHeaderAndFooter();
-                }
-
-                TabLayout_v1_8.getLayoutMapping().put(player.getUniqueId(), tabLayout_v1_8);
-                break;
+            TabLayout_v1_8.getLayoutMapping().put(player.getUniqueId(), tabLayout_v1_8);
         }
     }
 
